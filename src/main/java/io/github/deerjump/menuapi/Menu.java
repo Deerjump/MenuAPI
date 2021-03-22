@@ -46,7 +46,7 @@ public abstract class Menu implements InventoryHolder {
 
     /**
      * To see usage, refer to MenuListener
-     * <p/>
+     * <p> </p>
      * @param player The player that clicked the inventory (event.getWhoClicked())
      * @param slot The raw slot that the player clicked (event.getRawSlot()).
      *             Remember that this can excede the bounds of your custom inventory.
@@ -58,7 +58,7 @@ public abstract class Menu implements InventoryHolder {
     /**
      * This method is called right as the player is opening the inventory. <br>
      * It can be used to build the inventory dynamically, for example.
-     * <p/>
+     * <p> </p>
      * @param player The player that opened the inventory
      */
     public abstract void onOpen(Player player);
@@ -66,7 +66,7 @@ public abstract class Menu implements InventoryHolder {
     /**
      * This method is called as the player closes the inventory. <br>
      * It can be used to save results from their interactions, for example.
-     * <p/>
+     * <p> </p>
      * @param player The player that closed the inventory
      */
     public abstract void onClose(Player player);
@@ -74,7 +74,7 @@ public abstract class Menu implements InventoryHolder {
     /**
      *  Helper function designed to fill in empty spaces of the menu. <br>
      *  Can be overriden to define custom behavior
-     *  <p/>
+     *  <p> </p>
      * @param item What wil fill the empty spaces
      */
     protected void fill(ItemStack item) {
