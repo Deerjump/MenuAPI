@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ExampleMenu extends Menu {
 
     public ExampleMenu() {
-        super(18,"Example");
+        super(18, "Example");
     }
 
     @Override
