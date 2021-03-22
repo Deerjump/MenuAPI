@@ -2,12 +2,13 @@ package io.github.deerjump.menuapi;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings("unused")
 public abstract class Menu implements InventoryHolder {
 
     protected Inventory inventory;
@@ -36,9 +37,7 @@ public abstract class Menu implements InventoryHolder {
         this.inventory = Bukkit.createInventory(this, size, title);
     }
 
-    public boolean onClick(InventoryClickEvent event) {
-        return true;
-    }
+    public abstract boolean onClick(Player player, int slot, ClickType type);
 
     public abstract void onOpen(Player player);
 
