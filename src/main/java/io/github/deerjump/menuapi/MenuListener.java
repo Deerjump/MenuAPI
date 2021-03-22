@@ -8,6 +8,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+/**
+ * This class will be used only once to initialize the EventHandlers for <b>EVERY</b>
+ * instance of Menu that you have. <br>
+ * You <b>DO NOT NEED</b> a separate Listener for every Menu.
+ */
 @SuppressWarnings("unused")
 public class MenuListener implements Listener {
 
