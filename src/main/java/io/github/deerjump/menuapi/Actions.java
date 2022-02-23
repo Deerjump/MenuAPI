@@ -23,7 +23,7 @@ public class Actions<T> {
     }
 
     public Consumer<T> getAction(UUID id) {
-        return this.actions.getOrDefault(id, (arg) -> {});
+        return this.actions.getOrDefault(id, (t) -> {});
     }
 
     public void execute(UUID id, T args) {
