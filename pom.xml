@@ -12,13 +12,14 @@
       <dependency>
          <groupId>org.spigotmc</groupId>
          <artifactId>spigot</artifactId>
-         <version>1.16.5-R0.1-SNAPSHOT</version>
+         <version>1.18.1-R0.1-SNAPSHOT</version>
          <scope>provided</scope>
       </dependency>
    </dependencies>
 
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <java.version>8</java.version>
    </properties>
 
 
@@ -29,8 +30,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version>
             <configuration>
-               <source>8</source>
-               <target>8</target>
+               <source>${java.version}</source>
+               <target>${java.version}</target>
                <encoding>UTF-8</encoding>
             </configuration>
          </plugin>

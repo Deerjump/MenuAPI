@@ -20,16 +20,21 @@ public class MenuListener implements Listener {
     private void onClick(InventoryClickEvent event) {
         final InventoryHolder holder = event.getInventory().getHolder();
         if (!(holder instanceof Menu)) return;
-        event.setCancelled(((Menu) holder).onClick((Player)event.getWhoClicked(), event.getRawSlot(), event.getClick()));
+
+        ((Menu) holder).onClick(event);
     }
 
     @EventHandler private void onOpen(InventoryOpenEvent event) {
         final InventoryHolder holder = event.getInventory().getHolder();
-        if (holder instanceof Menu) ((Menu) holder).onOpen((Player)event.getPlayer());
+        if (!(holder instanceof Menu)) return;
+
+        ((Menu) holder).onOpen(event);
     }
 
     @EventHandler private void onClose(InventoryCloseEvent event) {
         final InventoryHolder holder = event.getInventory().getHolder();
-        if (holder instanceof Menu) ((Menu) holder).onClose((Player)event.getPlayer());
+        if (!(holder instanceof Menu)) return;
+
+        ((Menu) holder).onClose(event);
     }
 }

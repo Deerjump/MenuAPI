@@ -1,27 +1,26 @@
 package io.github.deerjump.menuapi;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 /**
  * Extend this class to create your custom Menu
  */
-@SuppressWarnings("unused")
 public abstract class Menu implements InventoryHolder {
-
+    protected static String defaultTitle = "Menu";
+    protected Actions<InventoryClickEvent> actions = new Actions<>();
     protected Inventory inventory;
 
     public Menu() {
-        this("Menu");
+        this(defaultTitle);
     }
 
     public Menu(String title) {
@@ -29,7 +28,7 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public Menu(InventoryType type) {
-        this(type, "Menu");
+        this(type, type.getDefaultTitle());
     }
 
     public Menu(InventoryType type, String title) {
@@ -37,39 +36,22 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public Menu(int size) {
-        this(size, "Menu");
+        this(size, defaultTitle);
     }
 
     public Menu(int size, String title) {
         this.inventory = Bukkit.createInventory(this, size, title);
     }
 
-    /**
-     * To see usage, refer to MenuListener
-     * <p> </p>
-     * @param player The player that clicked the inventory (event.getWhoClicked())
-     * @param slot The raw slot that the player clicked (event.getRawSlot()).
-     *             Remember that this can excede the bounds of your custom inventory.
-     * @param type The ClickType they used to click the inventory (event.getClick())
-     * @return <b>true</b>, if the event should be cancelled, <b>false</b> otherwise.
-     */
-    public abstract boolean onClick(Player player, int slot, ClickType type);
+    protected void executeClickAction(UUID id, InventoryClickEvent event) {
+        this.actions.getAction(id).accept(event);
+    }
 
-    /**
-     * This method is called right as the player is opening the inventory. <br>
-     * It can be used to build the inventory dynamically, for example.
-     * <p> </p>
-     * @param player The player that opened the inventory
-     */
-    public abstract void onOpen(Player player);
+    public abstract void onClick(InventoryClickEvent event);
 
-    /**
-     * This method is called as the player closes the inventory. <br>
-     * It can be used to save results from their interactions, for example.
-     * <p> </p>
-     * @param player The player that closed the inventory
-     */
-    public abstract void onClose(Player player);
+    public abstract void onOpen(InventoryOpenEvent event);
+
+    public abstract void onClose(InventoryCloseEvent event);
 
     /**
      *  Helper function designed to fill in empty spaces of the menu. <br>
@@ -84,10 +66,6 @@ public abstract class Menu implements InventoryHolder {
         }
     }
 
-    /**
-     * Gets the menu's inventory. This is called typically called like so: <br><b>Player#openInventory(Menu#getInventory())</b>
-     * @return inventory - the menu's inventory
-     */
     @Override
     @SuppressWarnings("NullableProblems")
     public Inventory getInventory() {
