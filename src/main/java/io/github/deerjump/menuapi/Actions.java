@@ -11,6 +11,8 @@ public class Actions<T> {
     public Actions() {}
 
     public UUID registerAction(Consumer<T> action) {
+        if (action == null) return null;
+
         for (Map.Entry<UUID, Consumer<T>> entry : this.actions.entrySet()) {
             if (!entry.getValue().equals(action)) continue;
 
@@ -28,5 +30,9 @@ public class Actions<T> {
 
     public void execute(UUID id, T args) {
         this.getAction(id).accept(args);
+    }
+
+    public void executeAll(T arg) {
+        this.actions.values().forEach(action -> action.accept(arg));
     }
 }

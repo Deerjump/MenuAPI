@@ -20,7 +20,9 @@ import static org.bukkit.persistence.PersistentDataType.STRING;
 public abstract class Menu implements InventoryHolder {
     protected static String defaultTitle = "Menu";
     protected static final NamespacedKey PDC_ACTION_KEY = new NamespacedKey("menu", "action");
-    protected Actions<InventoryClickEvent> actions = new Actions<>();
+    protected Actions<InventoryClickEvent> clickEventActions = new Actions<>();
+    protected Actions<InventoryOpenEvent> openEventActions = new Actions<>();
+    protected Actions<InventoryCloseEvent> closeEventActions = new Actions<>();
     protected Inventory inventory;
 
     public Menu() {
@@ -49,9 +51,21 @@ public abstract class Menu implements InventoryHolder {
 
     public abstract void onClick(InventoryClickEvent event);
 
-    public abstract void onOpen(InventoryOpenEvent event);
+    public void onOpen(InventoryOpenEvent event){
+        this.openEventActions.executeAll(event);
+    };
 
-    public abstract void onClose(InventoryCloseEvent event);
+    public void onClose(InventoryCloseEvent event){
+        this.closeEventActions.executeAll(event);
+    };
+
+    protected void registerOpenAction(Consumer<InventoryOpenEvent> action) {
+        this.openEventActions.registerAction(action);
+    }
+
+    protected void registerCloseAction(Consumer<InventoryCloseEvent> action) {
+        this.closeEventActions.registerAction(action);
+    }
 
     protected void executeClickAction(ItemStack item, InventoryClickEvent event) {
         if (item == null || item.getItemMeta() == null) return;
@@ -61,7 +75,7 @@ public abstract class Menu implements InventoryHolder {
         if (uuidString == null) return;
 
         UUID uuid = UUID.fromString(uuidString);
-        this.actions.execute(uuid, event);
+        this.clickEventActions.execute(uuid, event);
     }
 
     private ItemStack applyActionId(ItemStack item, UUID uuid) {
@@ -78,14 +92,14 @@ public abstract class Menu implements InventoryHolder {
     }
 
     protected void addItem(ItemStack item, Consumer<InventoryClickEvent> action) {
-        UUID uuid = this.actions.registerAction(action);
+        UUID uuid = this.clickEventActions.registerAction(action);
         ItemStack taggedItem = this.applyActionId(item, uuid);
 
         this.inventory.addItem(taggedItem);
     }
 
     protected void setItem(int slot, ItemStack item, Consumer<InventoryClickEvent> action) {
-        UUID uuid = this.actions.registerAction(action);
+        UUID uuid = this.clickEventActions.registerAction(action);
         ItemStack taggedItem = this.applyActionId(item, uuid);
         this.inventory.setItem(slot, taggedItem);
     }
